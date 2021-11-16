@@ -1,0 +1,15 @@
+name: Setup
+
+inputs:
+  components:
+    description: “Rust toolchain components to install”
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        components: ${{inputs.components}}
