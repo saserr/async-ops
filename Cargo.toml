@@ -3,3 +3,7 @@ name = "async-ops"
 version = "0.1.0"
 authors = ["Sanjin Sehic <saserr@gmail.com>"]
 edition = "2021"
+
+[dependencies]
+futures = "0.3"
+pin-project-lite = "0.2"
