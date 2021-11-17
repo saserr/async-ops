@@ -121,8 +121,48 @@
 //!
 //! assert_eq!(42, block_on(result));
 //! ```
+//!
+//! ## Sub
+//!
+//! `Async` implements `Sub<Rhs> where Rhs: Future` when the wrapped
+//! `Future::Output` type implements `Sub<Rhs::Output>`. The result of the
+//! subtraction is
+//! `Async<impl Future<Output = <Future::Output as Sub<Rhs::Output>>::Output>>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 44 };
+//! let b = async { 2 };
+//!
+//! let result = async { (async_ops::on(a) - b).await };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
+//! ## SubAssign
+//!
+//! `Async` implements `SubAssign<Rhs> where Rhs: Future` when the wrapped
+//! `Future::Output` type implements
+//! `Sub<Rhs::Output, Output = Future::Output>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 44 };
+//! let b = async { 2 };
+//!
+//! let result = async {
+//!   let mut a = async_ops::assignable(a);
+//!   a -= b;
+//!   a.await
+//! };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
 
 mod add;
+mod sub;
 
 use std::future::Future;
 use std::pin::Pin;
