@@ -59,7 +59,8 @@ values.
 
 ## Supported `std::ops` traits
 
-### Add
+<details>
+<summary><b>Add</b></summary>
 
 `Async` implements `Add<Rhs> where Rhs: Future` when the wrapped
 `Future::Output` type implements `Add<Rhs::Output>`. The result of the
@@ -77,7 +78,10 @@ let result = async { (async_ops::on(a) + b).await };
 assert_eq!(42, block_on(result));
 ```
 
-### AddAssign
+</details>
+
+<details>
+<summary><b>AddAssign</b></summary>
 
 `Async` implements `AddAssign<Rhs> where Rhs: Future` when the wrapped
 `Future::Output` type implements
@@ -97,3 +101,50 @@ let result = async {
 
 assert_eq!(42, block_on(result));
 ```
+
+</details>
+
+<details>
+<summary><b>Sub</b></summary>
+
+`Async` implements `Sub<Rhs> where Rhs: Future` when the wrapped
+`Future::Output` type implements `Sub<Rhs::Output>`. The result of the
+subtraction is
+`Async<impl Future<Output = <Future::Output as Sub<Rhs::Output>>::Output>>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { 44 };
+let b = async { 2 };
+
+let result = async { (async_ops::on(a) - b).await };
+
+assert_eq!(42, block_on(result));
+```
+
+</details>
+
+<details>
+<summary><b>SubAssign</b></summary>
+
+`Async` implements `SubAssign<Rhs> where Rhs: Future` when the wrapped
+`Future::Output` type implements
+`Sub<Rhs::Output, Output = Future::Output>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { 44 };
+let b = async { 2 };
+
+let result = async {
+  let mut a = async_ops::assignable(a);
+  a -= b;
+  a.await
+};
+
+assert_eq!(42, block_on(result));
+```
+
+</details>
