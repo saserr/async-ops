@@ -161,16 +161,18 @@
 //! assert_eq!(42, block_on(result));
 //! ```
 
-mod add;
-mod sub;
+mod ops;
 
 use std::future::Future;
 use std::pin::Pin;
-
 use std::task::{Context, Poll};
 
 use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
+
+pub use ops::add::{add, Add};
+pub use ops::sub::{sub, Sub};
+pub use ops::{Assignable, Binary};
 
 /// Wraps the given [`Future`] with [`Async`].
 ///
@@ -193,6 +195,8 @@ pub fn on<Fut: Future>(future: Fut) -> Async<Fut> {
 /// Wraps the given [`Future`] with [`Async`] that can be used with the `Assign`
 /// variants of [`std::ops`] traits.
 ///
+/// See also [`Async::assignable`].
+///
 /// # Example
 ///
 /// ```rust
@@ -210,9 +214,8 @@ pub fn on<Fut: Future>(future: Fut) -> Async<Fut> {
 /// assert_eq!(42, block_on(result));
 /// ```
 pub fn assignable<'a, Fut: Future + Send + 'a>(future: Fut) -> Async<BoxFuture<'a, Fut::Output>> {
-  Async {
-    future: Box::pin(future),
-  }
+  let future: BoxFuture<Fut::Output> = Assignable::from(future);
+  Async { future }
 }
 
 pin_project! {
@@ -225,6 +228,112 @@ pin_project! {
   pub struct Async<Fut: Future> {
     #[pin]
     future: Fut
+  }
+}
+
+impl<Fut: Future> Async<Fut> {
+  /// Wraps the inner [`Future`] in [`Async`] with the given `Assignable` type
+  /// so that it can be used with `Assign` variants of [`std::ops`] traits.
+  ///
+  /// See also [`async_ops::assignable`](crate::assignable).
+  ///
+  /// # Example
+  ///
+  /// ```rust
+  /// use futures::executor::block_on;
+  /// use futures::future::LocalBoxFuture;
+  ///
+  /// let a = async { 40 };
+  /// let b = async { 2 };
+  ///
+  /// let result = async {
+  ///   let mut a = async_ops::on(a).assignable::<LocalBoxFuture<usize>>();
+  ///   a += b;
+  ///   a.await
+  /// };
+  ///
+  /// assert_eq!(42, block_on(result));
+  /// ```
+  pub fn assignable<T: Assignable<Fut> + Future>(self) -> Async<T> {
+    Async {
+      future: T::from(self.future),
+    }
+  }
+
+  /// Does the given [`Binary`] operation `Op` on the inner [`Future`] in
+  /// [`Async`] and the given right-hand operand and returns the result in a new
+  /// [`Async`].
+  ///
+  /// See also [`Async::op_assign`].
+  ///
+  /// # Example
+  ///
+  /// ```rust
+  /// use futures::executor::block_on;
+  /// use async_ops::Binary;
+  ///
+  /// struct ReturnRhs;
+  ///
+  /// impl<Lhs, Rhs> Binary<Lhs, Rhs> for ReturnRhs {
+  ///   type Output = Rhs;
+  ///   fn op(_: Lhs, rhs: Rhs) -> Self::Output {
+  ///     rhs
+  ///   }
+  /// }
+  ///
+  /// let a = async { 2 };
+  /// let b = async { 42 };
+  ///
+  /// let result = async {
+  ///   async_ops::on(a).op(ReturnRhs, b).await
+  /// };
+  ///
+  /// assert_eq!(42, block_on(result));
+  /// ```
+  pub fn op<Rhs, Op: Binary<Fut, Rhs>>(self, _: Op, rhs: Rhs) -> Async<Op::Output>
+  where
+    Op::Output: Future,
+  {
+    crate::on(Op::op(self.future, rhs))
+  }
+
+  /// Does the given [`Binary`] operation `Op` on the inner [`Future`] in
+  /// [`Async`] and the given right-hand operand and assigns it to `self`.
+  ///
+  /// See also [`Async::op`].
+  ///
+  /// # Example
+  ///
+  /// ```rust
+  /// use futures::executor::block_on;
+  /// use async_ops::Binary;
+  ///
+  /// struct ReturnRhs;
+  ///
+  /// impl<Lhs, Rhs> Binary<Lhs, Rhs> for ReturnRhs {
+  ///   type Output = Rhs;
+  ///   fn op(_: Lhs, rhs: Rhs) -> Self::Output {
+  ///     rhs
+  ///   }
+  /// }
+  ///
+  /// let a = async { 2 };
+  /// let b = async { 42 };
+  ///
+  /// let result = async {
+  ///   let mut a = async_ops::assignable(a);
+  ///   a.op_assign(ReturnRhs, b);
+  ///   a.await
+  /// };
+  ///
+  /// assert_eq!(42, block_on(result));
+  /// ```
+  pub fn op_assign<Rhs, Op: Binary<Fut, Rhs>>(&mut self, _: Op, rhs: Rhs)
+  where
+    Fut: Assignable<Op::Output>,
+    Op::Output: Future,
+  {
+    Op::op_assign(&mut self.future, rhs);
   }
 }
 
