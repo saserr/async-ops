@@ -1,0 +1,14 @@
+{
+  "cSpell.words": [
+    "stdops"
+  ],
+  "markdownlint.config": {
+    "MD033": {
+      "allowed_elements": [
+        "b",
+        "details",
+        "summary"
+      ]
+    }
+  }
+}
