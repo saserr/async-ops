@@ -67,11 +67,14 @@ jobs:
 
     - name: Setup
       uses: ./setup
+      with:
+        toolchain: nightly
 
     - name: Tarpaulin
       uses: actions-rs/tarpaulin@v0.1
       with:
         out-type: Xml
+        args: --run-types Tests Doctests --all
 
     - name: Upload to codecov.io
       uses: codecov/codecov-action@v2
