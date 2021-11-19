@@ -170,9 +170,7 @@ use std::task::{Context, Poll};
 use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
 
-pub use ops::add::{add, Add};
-pub use ops::sub::{sub, Sub};
-pub use ops::{Assignable, Binary};
+pub use ops::{add, sub, Add, Assignable, Binary, Sub};
 
 /// Wraps the given [`Future`] with [`Async`].
 ///
