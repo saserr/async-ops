@@ -295,3 +295,10 @@ mod tests {
     assert_eq!(1, *polled_times.borrow());
   }
 }
+
+#[cfg(doctest)]
+mod readme {
+  use doc_comment::doctest;
+
+  doctest!("../README.md");
+}
