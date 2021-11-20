@@ -3,11 +3,12 @@
 [![CI](https://github.com/saserr/async-ops/actions/workflows/CI.yml/badge.svg)](https://github.com/saserr/async-ops/actions/workflows/CI.yml)
 [![codecov](https://codecov.io/gh/saserr/async-ops/branch/main/graph/badge.svg?token=2K2DABXJMS)](https://codecov.io/gh/saserr/async-ops)
 
-This crate provides a way to use some `std::ops` traits with `Futures`. To be
-able to use a `std::ops` traits with a `Future`, first you need to wrap the
-`Future` with `Async` using `async_ops::on`. Then, as long the `Future::Output`
-type implements a supported `std::ops` trait, then the same `std::ops` trait
-will be implemented by the `Async` instance.
+This crate provides a way to use
+[some `std::ops` traits](#supported-stdops-traits) with `Futures`. To be able to
+use a `std::ops` traits with a `Future`, first you need to wrap the `Future`
+with `Async` using `async_ops::on`. Then, as long the `Future::Output` type
+implements a supported `std::ops` trait, then the same `std::ops` trait will be
+implemented by the `Async` instance.
 
 Another option is to wrap a `Future` with `Async` using `async_ops::assignable`
 to enable usage of the `Assign` variants of `std::ops` traits on the `Future`.
@@ -35,7 +36,11 @@ Actually, the above code is not optimally implemented because `a` and `b` are
 use `join!` to be able to concurrently `await` both values like this:
 
 ```rust
+use futures::executor::block_on;
 use futures::join;
+
+let a = async { 40 };
+let b = async { 2 };
 
 let result = async {
   let (a, b) = join!(a, b);
@@ -49,6 +54,11 @@ Or, just use `async_ops::on` to do the same thing like the above example in one
 line:
 
 ```rust
+use futures::executor::block_on;
+
+let a = async { 40 };
+let b = async { 2 };
+
 let result = async { (async_ops::on(a) + b).await };
 
 assert_eq!(42, block_on(result));
