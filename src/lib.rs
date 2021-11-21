@@ -240,24 +240,20 @@ impl<Fut: Future> Future for Async<Fut> {
 mod tests {
   use super::*;
 
-  use std::sync::{Arc, Mutex};
+  use std::cell::RefCell;
+  use std::rc::Rc;
 
-  use futures::task::{waker, ArcWake};
-
-  struct Waker;
-
-  impl ArcWake for Waker {
-    fn wake_by_ref(_: &Arc<Self>) {
-      unimplemented!()
-    }
-  }
+  use futures::future::FutureExt;
 
   pin_project! {
     #[derive(Default)]
     struct FakeFuture<T> {
       value: Option<T>,
-      polled_times: Arc<Mutex<usize>>,
-      was_ready: Arc<Mutex<bool>>,
+      // This is of course not safe in the multi-threaded world and normally
+      // Arc and future-safe Mutex should be used. However, because we are only
+      // using now_or_never() to immediately poll the future on the same thread,
+      // it is safe to use Rc and RefCell here.
+      polled_times: Rc<RefCell<usize>>,
     }
   }
 
@@ -266,16 +262,10 @@ mod tests {
 
     fn poll(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<Self::Output> {
       let this = self.project();
-      *this.polled_times.lock().unwrap() += 1;
+      *this.polled_times.borrow_mut() += 1;
       match this.value.take() {
-        Some(value) => {
-          *this.was_ready.lock().unwrap() = true;
-          Poll::Ready(value)
-        }
-        None => {
-          assert!(!*this.was_ready.lock().unwrap());
-          Poll::Pending
-        }
+        Some(value) => Poll::Ready(value),
+        None => Poll::Pending,
       }
     }
   }
@@ -284,38 +274,24 @@ mod tests {
   fn ready_when_the_wrapped_future_is_ready() {
     let mut future = FakeFuture::default();
     let polled_times = future.polled_times.clone();
-    let was_ready = future.was_ready.clone();
 
-    assert_eq!(0, *polled_times.lock().unwrap());
-    assert!(!*was_ready.lock().unwrap());
+    assert_eq!(0, *polled_times.borrow());
 
     future.value = Some(42);
-    let mut future = on(future);
-    assert!(matches!(
-      Pin::new(&mut future).poll(&mut Context::from_waker(&waker(Arc::new(Waker)))),
-      Poll::Ready(42)
-    ));
+    assert_eq!(Some(42), on(future).now_or_never());
 
-    assert_eq!(1, *polled_times.lock().unwrap());
-    assert!(*was_ready.lock().unwrap());
+    assert_eq!(1, *polled_times.borrow());
   }
 
   #[test]
   fn pending_when_the_wrapped_future_is_pending() {
     let future = FakeFuture::<usize>::default();
     let polled_times = future.polled_times.clone();
-    let was_ready = future.was_ready.clone();
 
-    assert_eq!(0, *polled_times.lock().unwrap());
-    assert!(!*was_ready.lock().unwrap());
+    assert_eq!(0, *polled_times.borrow());
 
-    let mut future = on(future);
-    assert!(matches!(
-      Pin::new(&mut future).poll(&mut Context::from_waker(&waker(Arc::new(Waker)))),
-      Poll::Pending
-    ));
+    assert_eq!(None, on(future).now_or_never());
 
-    assert_eq!(1, *polled_times.lock().unwrap());
-    assert!(!*was_ready.lock().unwrap());
+    assert_eq!(1, *polled_times.borrow());
   }
 }
