@@ -123,6 +123,46 @@
 //! assert_eq!(42, block_on(result));
 //! ```
 //!
+//! ## Div
+//!
+//! `Async` implements `Div<Rhs> where Rhs: Future` when the wrapped
+//! `Future::Output` type implements `Div<Rhs::Output>`. The result of the
+//! division is
+//! `Async<impl Future<Output = <Future::Output as Div<Rhs::Output>>::Output>>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 84 };
+//! let b = async { 2 };
+//!
+//! let result = async { (async_ops::on(a) / b).await };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
+//! ## DivAssign
+//!
+//! `Async` implements `DivAssign<Rhs> where Rhs: Future` when the wrapped
+//! `Future` type implements `Assignable<<Async<Future> as Div<Rhs>>::Output>`,
+//! which in turn requires the `Future::Output` type to implement
+//! `Div<Rhs::Output>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 84 };
+//! let b = async { 2 };
+//!
+//! let result = async {
+//!   let mut a = async_ops::assignable(a);
+//!   a /= b;
+//!   a.await
+//! };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
 //! ## Mul
 //!
 //! `Async` implements `Mul<Rhs> where Rhs: Future` when the wrapped
@@ -212,7 +252,7 @@ use std::task::{Context, Poll};
 use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
 
-pub use ops::{add, mul, sub, Add, Assignable, Binary, Mul, Sub};
+pub use ops::{add, div, mul, sub, Add, Assignable, Binary, Div, Mul, Sub};
 
 /// Wraps the given [`Future`] with [`Async`].
 ///
