@@ -94,8 +94,9 @@ assert_eq!(42, block_on(result));
 <summary><b>AddAssign</b></summary>
 
 `Async` implements `AddAssign<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements
-`Add<Rhs::Output, Output = Future::Output>`.
+`Future` type implements `Assignable<<Async<Future> as Add<Rhs>>::Output>`,
+which in turn requires the `Future::Output` type to implement
+`Add<Rhs::Output>`.
 
 ```rust
 use futures::executor::block_on;
@@ -139,8 +140,9 @@ assert_eq!(42, block_on(result));
 <summary><b>SubAssign</b></summary>
 
 `Async` implements `SubAssign<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements
-`Sub<Rhs::Output, Output = Future::Output>`.
+`Future` type implements `Assignable<<Async<Future> as Sub<Rhs>>::Output>`,
+which in turn requires the `Future::Output` type to implement
+`Sub<Rhs::Output>`.
 
 ```rust
 use futures::executor::block_on;
