@@ -203,6 +203,22 @@
 //! assert_eq!(42, block_on(result));
 //! ```
 //!
+//! ## Neg
+//!
+//! `Async` implements `Neg` when the wrapped `Future::Output` type implements
+//! `Neg`. The result of the negation is
+//! `Async<impl Future<Output = <Future::Output as Neg>::Output>>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { -42 };
+//!
+//! let result = async { (-async_ops::on(a)).await };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
 //! ## Rem
 //!
 //! `Async` implements `Rem<Rhs> where Rhs: Future` when the wrapped
@@ -292,7 +308,9 @@ use std::task::{Context, Poll};
 use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
 
-pub use ops::{add, div, mul, rem, sub, Add, Assignable, Binary, Div, Mul, Rem, Sub};
+pub use ops::{
+  add, div, mul, neg, rem, sub, Add, Assignable, Binary, Div, Mul, Neg, Rem, Sub, Unary,
+};
 
 /// Wraps the given [`Future`] with [`Async`].
 ///
@@ -380,7 +398,41 @@ impl<Fut: Future> Async<Fut> {
     }
   }
 
-  /// Does the given [`Binary`] operation `Op` on the inner [`Future`] in
+  /// Does the given [`Unary`] operation `Op` on the wrapped [`Future`] in
+  /// [`Async`] and returns the result in a new [`Async`].
+  ///
+  /// # Example
+  ///
+  /// ```rust
+  /// use std::future::{ready, Ready};
+  /// use futures::executor::block_on;
+  /// use async_ops::Unary;
+  ///
+  /// struct Return42;
+  ///
+  /// impl<Operand> Unary<Operand> for Return42 {
+  ///   type Output = Ready<usize>;
+  ///   fn op(_: Operand) -> Self::Output {
+  ///     ready(42)
+  ///   }
+  /// }
+  ///
+  /// let a = async { 2 };
+  ///
+  /// let result = async {
+  ///   async_ops::on(a).unary(Return42).await
+  /// };
+  ///
+  /// assert_eq!(42, block_on(result));
+  /// ```
+  pub fn unary<Op: Unary<Fut>>(self, _: Op) -> Async<Op::Output>
+  where
+    Op::Output: Future,
+  {
+    crate::on(Op::op(self.future))
+  }
+
+  /// Does the given [`Binary`] operation `Op` on the wrapped [`Future`] in
   /// [`Async`] and the given right-hand operand and returns the result in a new
   /// [`Async`].
   ///
@@ -417,7 +469,7 @@ impl<Fut: Future> Async<Fut> {
     crate::on(Op::op(self.future, rhs))
   }
 
-  /// Does the given [`Binary`] operation `Op` on the inner [`Future`] in
+  /// Does the given [`Binary`] operation `Op` on the wrapped [`Future`] in
   /// [`Async`] and the given right-hand operand and assigns it to `self`.
   ///
   /// See also [`Async::op`].

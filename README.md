@@ -208,6 +208,25 @@ assert_eq!(42, block_on(result));
 </details>
 
 <details>
+<summary><b>Neg</b></summary>
+
+`Async` implements `Neg` when the wrapped `Future::Output` type implements
+`Neg`. The result of the negation is
+`Async<impl Future<Output = <Future::Output as Neg>::Output>>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { -42 };
+
+let result = async { (-async_ops::on(a)).await };
+
+assert_eq!(42, block_on(result));
+```
+
+</details>
+
+<details>
 <summary><b>Rem</b></summary>
 
 `Async` implements `Rem<Rhs> where Rhs: Future` when the wrapped
