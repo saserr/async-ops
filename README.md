@@ -208,6 +208,52 @@ assert_eq!(42, block_on(result));
 </details>
 
 <details>
+<summary><b>Rem</b></summary>
+
+`Async` implements `Rem<Rhs> where Rhs: Future` when the wrapped
+`Future::Output` type implements `Rem<Rhs::Output>`. The result of the
+reminder operation is
+`Async<impl Future<Output = <Future::Output as Rem<Rhs::Output>>::Output>>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { 42 };
+let b = async { 5 };
+
+let result = async { (async_ops::on(a) % b).await };
+
+assert_eq!(2, block_on(result));
+```
+
+</details>
+
+<details>
+<summary><b>RemAssign</b></summary>
+
+`Async` implements `RemAssign<Rhs> where Rhs: Future` when the wrapped
+`Future` type implements `Assignable<<Async<Future> as Rem<Rhs>>::Output>`,
+which in turn requires the `Future::Output` type to implement
+`Rem<Rhs::Output>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { 42 };
+let b = async { 5 };
+
+let result = async {
+  let mut a = async_ops::assignable(a);
+  a %= b;
+  a.await
+};
+
+assert_eq!(2, block_on(result));
+```
+
+</details>
+
+<details>
 <summary><b>Sub</b></summary>
 
 `Async` implements `Sub<Rhs> where Rhs: Future` when the wrapped
