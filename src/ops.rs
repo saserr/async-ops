@@ -178,7 +178,7 @@ macro_rules! from_std_ops {
   )*};
 }
 
-from_std_ops!(Add, Sub);
+from_std_ops!(Add, Mul, Sub);
 
 #[cfg(test)]
 mod tests {
