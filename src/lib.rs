@@ -18,7 +18,7 @@
 //!
 //! This crate provides a way to use
 //! [some `std::ops` traits](#supported-stdops-traits) with [futures](Future).
-//! To be able to use a [`std::ops`] traits with a `Future`, first you need to
+//! To be able to use a [`std::ops`] trait with a `Future`, first you need to
 //! wrap the `Future` with [`Async`] using [`async_ops::on`](crate::on). Then,
 //! as long the `Future::Output` type implements a supported `std::ops` trait,
 //! then the same `std::ops` trait will be implemented by the `Async` instance.
@@ -219,6 +219,22 @@
 //! assert_eq!(42, block_on(result));
 //! ```
 //!
+//! ## Not
+//!
+//! `Async` implements `Not` when the wrapped `Future::Output` type implements
+//! `Not`. The result of the logical negation is
+//! `Async<impl Future<Output = <Future::Output as Not>::Output>>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 213_u8 };
+//!
+//! let result = async { (!async_ops::on(a)).await };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
 //! ## Rem
 //!
 //! `Async` implements `Rem<Rhs> where Rhs: Future` when the wrapped
@@ -309,7 +325,7 @@ use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
 
 pub use ops::{
-  add, div, mul, neg, rem, sub, Add, Assignable, Binary, Div, Mul, Neg, Rem, Sub, Unary,
+  add, div, mul, neg, not, rem, sub, Add, Assignable, Binary, Div, Mul, Neg, Not, Rem, Sub, Unary,
 };
 
 /// Wraps the given [`Future`] with [`Async`].

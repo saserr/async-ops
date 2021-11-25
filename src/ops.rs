@@ -279,7 +279,7 @@ macro_rules! from_std_binary_ops {
   )*};
 }
 
-from_std_unary_ops!(Neg);
+from_std_unary_ops!(Neg, Not);
 from_std_binary_ops!(Add, Div, Mul, Rem, Sub);
 
 #[cfg(test)]
