@@ -162,6 +162,52 @@ assert_eq!(42, block_on(result));
 </details>
 
 <details>
+<summary><b>BitOr</b></summary>
+
+`Async` implements `BitOr<Rhs> where Rhs: Future` when the wrapped
+`Future::Output` type implements `BitOr<Rhs::Output>`. The result of the
+bitwise or is
+`Async<impl Future<Output = <Future::Output as BitOr<Rhs::Output>>::Output>>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { 40 };
+let b = async { 10 };
+
+let result = async { (async_ops::on(a) | b).await };
+
+assert_eq!(42, block_on(result));
+```
+
+</details>
+
+<details>
+<summary><b>BitOrAssign</b></summary>
+
+`Async` implements `BitOrAssign<Rhs> where Rhs: Future` when the wrapped
+`Future` type implements `Assignable<<Async<Future> as BitOr<Rhs>>::Output>`,
+which in turn requires the `Future::Output` type to implement
+`BitOr<Rhs::Output>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { 40 };
+let b = async { 10 };
+
+let result = async {
+  let mut a = async_ops::assignable(a);
+  a |= b;
+  a.await
+};
+
+assert_eq!(42, block_on(result));
+```
+
+</details>
+
+<details>
 <summary><b>Div</b></summary>
 
 `Async` implements `Div<Rhs> where Rhs: Future` when the wrapped
