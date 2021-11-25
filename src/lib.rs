@@ -123,6 +123,46 @@
 //! assert_eq!(42, block_on(result));
 //! ```
 //!
+//! ## BitAnd
+//!
+//! `Async` implements `BitAnd<Rhs> where Rhs: Future` when the wrapped
+//! `Future::Output` type implements `BitAnd<Rhs::Output>`. The result of the
+//! bitwise and is
+//! `Async<impl Future<Output = <Future::Output as BitAnd<Rhs::Output>>::Output>>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 110 };
+//! let b = async { 59 };
+//!
+//! let result = async { (async_ops::on(a) & b).await };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
+//! ## BitAndAssign
+//!
+//! `Async` implements `BitAndAssign<Rhs> where Rhs: Future` when the wrapped
+//! `Future` type implements
+//! `Assignable<<Async<Future> as BitAnd<Rhs>>::Output>`, which in turn requires
+//! the `Future::Output` type to implement `BitAnd<Rhs::Output>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 110 };
+//! let b = async { 59 };
+//!
+//! let result = async {
+//!   let mut a = async_ops::assignable(a);
+//!   a &= b;
+//!   a.await
+//! };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
 //! ## Div
 //!
 //! `Async` implements `Div<Rhs> where Rhs: Future` when the wrapped
@@ -325,7 +365,8 @@ use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
 
 pub use ops::{
-  add, div, mul, neg, not, rem, sub, Add, Assignable, Binary, Div, Mul, Neg, Not, Rem, Sub, Unary,
+  add, bitand, div, mul, neg, not, rem, sub, Add, Assignable, Binary, BitAnd, Div, Mul, Neg, Not,
+  Rem, Sub, Unary,
 };
 
 /// Wraps the given [`Future`] with [`Async`].
