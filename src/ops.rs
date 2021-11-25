@@ -280,7 +280,7 @@ macro_rules! from_std_binary_ops {
 }
 
 from_std_unary_ops!(Neg, Not);
-from_std_binary_ops!(Add, BitAnd, Div, Mul, Rem, Sub);
+from_std_binary_ops!(Add, BitAnd, BitOr, Div, Mul, Rem, Sub);
 
 #[cfg(test)]
 mod tests {
