@@ -395,6 +395,46 @@
 //! assert_eq!(2, block_on(result));
 //! ```
 //!
+//! ## Shl
+//!
+//! `Async` implements `Shl<Rhs> where Rhs: Future` when the wrapped
+//! `Future::Output` type implements `Shl<Rhs::Output>`. The result of the
+//! left shift is
+//! `Async<impl Future<Output = <Future::Output as Shl<Rhs::Output>>::Output>>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 21 };
+//! let b = async { 1 };
+//!
+//! let result = async { (async_ops::on(a) << b).await };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
+//! ## ShlAssign
+//!
+//! `Async` implements `ShlAssign<Rhs> where Rhs: Future` when the wrapped
+//! `Future` type implements `Assignable<<Async<Future> as Shl<Rhs>>::Output>`,
+//! which in turn requires the `Future::Output` type to implement
+//! `Shl<Rhs::Output>`.
+//!
+//! ```rust
+//! use futures::executor::block_on;
+//!
+//! let a = async { 21 };
+//! let b = async { 1 };
+//!
+//! let result = async {
+//!   let mut a = async_ops::assignable(a);
+//!   a <<= b;
+//!   a.await
+//! };
+//!
+//! assert_eq!(42, block_on(result));
+//! ```
+//!
 //! ## Sub
 //!
 //! `Async` implements `Sub<Rhs> where Rhs: Future` when the wrapped
@@ -445,8 +485,8 @@ use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
 
 pub use ops::{
-  add, bitand, bitor, bitxor, div, mul, neg, not, rem, sub, Add, Assignable, Binary, BitAnd, BitOr,
-  BitXor, Div, Mul, Neg, Not, Rem, Sub, Unary,
+  add, bitand, bitor, bitxor, div, mul, neg, not, rem, shl, sub, Add, Assignable, Binary, BitAnd,
+  BitOr, BitXor, Div, Mul, Neg, Not, Rem, Shl, Sub, Unary,
 };
 
 /// Wraps the given [`Future`] with [`Async`].
