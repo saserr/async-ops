@@ -5,7 +5,7 @@
 
 This crate provides a way to use
 [some `std::ops` traits](#supported-stdops-traits) with `Futures`. To be able to
-use a `std::ops` traits with a `Future`, first you need to wrap the `Future`
+use a `std::ops` trait with a `Future`, first you need to wrap the `Future`
 with `Async` using `async_ops::on`. Then, as long the `Future::Output` type
 implements a supported `std::ops` trait, then the same `std::ops` trait will be
 implemented by the `Async` instance.
@@ -220,6 +220,25 @@ use futures::executor::block_on;
 let a = async { -42 };
 
 let result = async { (-async_ops::on(a)).await };
+
+assert_eq!(42, block_on(result));
+```
+
+</details>
+
+<details>
+<summary><b>Not</b></summary>
+
+`Async` implements `Not` when the wrapped `Future::Output` type implements
+`Not`. The result of the logical negation is
+`Async<impl Future<Output = <Future::Output as Not>::Output>>`.
+
+```rust
+use futures::executor::block_on;
+
+let a = async { 213_u8 };
+
+let result = async { (!async_ops::on(a)).await };
 
 assert_eq!(42, block_on(result));
 ```
