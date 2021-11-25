@@ -2,6 +2,7 @@
   "cSpell.words": [
     "bitand",
     "bitor",
+    "bitxor",
     "concat",
     "doctest",
     "stdops"
