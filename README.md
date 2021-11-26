@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/saserr/async-ops/actions/workflows/CI.yml/badge.svg)](https://github.com/saserr/async-ops/actions/workflows/CI.yml)
 [![codecov](https://codecov.io/gh/saserr/async-ops/branch/main/graph/badge.svg?token=2K2DABXJMS)](https://codecov.io/gh/saserr/async-ops)
+[![License](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue.svg)](
+https://github.com/saserr/async-ops)
 
 This crate provides a way to use
 [some `std::ops` traits](#supported-stdops-traits) with `Futures`. To be able to
@@ -559,3 +561,21 @@ assert_eq!(42, block_on(result));
 ```
 
 </details>
+
+## License
+
+Licensed under either of
+
+* Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE)
+or <http://www.apache.org/licenses/LICENSE-2.0>)
+* MIT license ([LICENSE-MIT](LICENSE-MIT) or
+<http://opensource.org/licenses/MIT>)
+
+at your option.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the
+[Apache License Version 2.0](LICENSE-APACHE), shall be dual licensed as above,
+without any additional terms or conditions.
