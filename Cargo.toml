@@ -1,8 +1,13 @@
 [package]
 name = "async-ops"
 version = "0.1.0"
+description = "Use std::ops traits with Futures"
+repository = "https://github.com/saserr/async-ops"
 license = "MIT OR Apache-2.0"
 authors = ["Sanjin Sehic <saserr@gmail.com>"]
+readme = "README.md"
+keywords = ["future", "async", "await", "std"]
+categories = ["asynchronous", "concurrency"]
 edition = "2021"
 
 [dependencies]
