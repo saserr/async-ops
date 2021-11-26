@@ -73,7 +73,7 @@ values.
 <summary><b>Add</b></summary>
 
 `Async` implements `Add<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `Add<Rhs::Output>`. The result of the
+`Future::Output` type implements `Add<Rhs::Output>`. The resulting type of the
 addition is
 `Async<impl Future<Output = <Future::Output as Add<Rhs::Output>>::Output>>`.
 
@@ -93,10 +93,9 @@ assert_eq!(42, block_on(result));
 <details>
 <summary><b>AddAssign</b></summary>
 
-`Async` implements `AddAssign<Rhs> where Rhs: Future` when the wrapped
-`Future` type implements `Assignable<<Async<Future> as Add<Rhs>>::Output>`,
-which in turn requires the `Future::Output` type to implement
-`Add<Rhs::Output>`.
+`Async` implements `AddAssign<Rhs> where Rhs: Future` when the wrapped `Future`
+type implements `Assignable<<Async<Future> as Add<Rhs>>::Output>`, which in turn
+requires the `Future::Output` type to implement `Add<Rhs::Output>`.
 
 ```rust
 use futures::executor::block_on;
@@ -119,8 +118,8 @@ assert_eq!(42, block_on(result));
 <summary><b>BitAnd</b></summary>
 
 `Async` implements `BitAnd<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `BitAnd<Rhs::Output>`. The result of the
-bitwise and is
+`Future::Output` type implements `BitAnd<Rhs::Output>`. The resulting type of
+the bitwise and is
 `Async<impl Future<Output = <Future::Output as BitAnd<Rhs::Output>>::Output>>`.
 
 ```rust
@@ -165,7 +164,7 @@ assert_eq!(42, block_on(result));
 <summary><b>BitOr</b></summary>
 
 `Async` implements `BitOr<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `BitOr<Rhs::Output>`. The result of the
+`Future::Output` type implements `BitOr<Rhs::Output>`. The resulting type of the
 bitwise or is
 `Async<impl Future<Output = <Future::Output as BitOr<Rhs::Output>>::Output>>`.
 
@@ -211,8 +210,8 @@ assert_eq!(42, block_on(result));
 <summary><b>BitXor</b></summary>
 
 `Async` implements `BitXor<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `BitXor<Rhs::Output>`. The result of the
-bitwise xor is
+`Future::Output` type implements `BitXor<Rhs::Output>`. The resulting type of
+the bitwise xor is
 `Async<impl Future<Output = <Future::Output as BitXor<Rhs::Output>>::Output>>`.
 
 ```rust
@@ -257,7 +256,7 @@ assert_eq!(42, block_on(result));
 <summary><b>Div</b></summary>
 
 `Async` implements `Div<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `Div<Rhs::Output>`. The result of the
+`Future::Output` type implements `Div<Rhs::Output>`. The resulting type of the
 division is
 `Async<impl Future<Output = <Future::Output as Div<Rhs::Output>>::Output>>`.
 
@@ -277,10 +276,9 @@ assert_eq!(42, block_on(result));
 <details>
 <summary><b>DivAssign</b></summary>
 
-`Async` implements `DivAssign<Rhs> where Rhs: Future` when the wrapped
-`Future` type implements `Assignable<<Async<Future> as Div<Rhs>>::Output>`,
-which in turn requires the `Future::Output` type to implement
-`Div<Rhs::Output>`.
+`Async` implements `DivAssign<Rhs> where Rhs: Future` when the wrapped `Future`
+type implements `Assignable<<Async<Future> as Div<Rhs>>::Output>`, which in turn
+requires the `Future::Output` type to implement `Div<Rhs::Output>`.
 
 ```rust
 use futures::executor::block_on;
@@ -303,7 +301,7 @@ assert_eq!(42, block_on(result));
 <summary><b>Mul</b></summary>
 
 `Async` implements `Mul<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `Mul<Rhs::Output>`. The result of the
+`Future::Output` type implements `Mul<Rhs::Output>`. The resulting type of the
 multiplication is
 `Async<impl Future<Output = <Future::Output as Mul<Rhs::Output>>::Output>>`.
 
@@ -323,10 +321,9 @@ assert_eq!(42, block_on(result));
 <details>
 <summary><b>MulAssign</b></summary>
 
-`Async` implements `MulAssign<Rhs> where Rhs: Future` when the wrapped
-`Future` type implements `Assignable<<Async<Future> as Mul<Rhs>>::Output>`,
-which in turn requires the `Future::Output` type to implement
-`Mul<Rhs::Output>`.
+`Async` implements `MulAssign<Rhs> where Rhs: Future` when the wrapped `Future`
+type implements `Assignable<<Async<Future> as Mul<Rhs>>::Output>`, which in turn
+requires the `Future::Output` type to implement `Mul<Rhs::Output>`.
 
 ```rust
 use futures::executor::block_on;
@@ -349,7 +346,7 @@ assert_eq!(42, block_on(result));
 <summary><b>Neg</b></summary>
 
 `Async` implements `Neg` when the wrapped `Future::Output` type implements
-`Neg`. The result of the negation is
+`Neg`. The resulting type of the negation is
 `Async<impl Future<Output = <Future::Output as Neg>::Output>>`.
 
 ```rust
@@ -368,7 +365,7 @@ assert_eq!(42, block_on(result));
 <summary><b>Not</b></summary>
 
 `Async` implements `Not` when the wrapped `Future::Output` type implements
-`Not`. The result of the logical negation is
+`Not`. The resulting type of the logical negation is
 `Async<impl Future<Output = <Future::Output as Not>::Output>>`.
 
 ```rust
@@ -387,7 +384,7 @@ assert_eq!(42, block_on(result));
 <summary><b>Rem</b></summary>
 
 `Async` implements `Rem<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `Rem<Rhs::Output>`. The result of the
+`Future::Output` type implements `Rem<Rhs::Output>`. The resulting type of the
 reminder operation is
 `Async<impl Future<Output = <Future::Output as Rem<Rhs::Output>>::Output>>`.
 
@@ -407,10 +404,9 @@ assert_eq!(2, block_on(result));
 <details>
 <summary><b>RemAssign</b></summary>
 
-`Async` implements `RemAssign<Rhs> where Rhs: Future` when the wrapped
-`Future` type implements `Assignable<<Async<Future> as Rem<Rhs>>::Output>`,
-which in turn requires the `Future::Output` type to implement
-`Rem<Rhs::Output>`.
+`Async` implements `RemAssign<Rhs> where Rhs: Future` when the wrapped `Future`
+type implements `Assignable<<Async<Future> as Rem<Rhs>>::Output>`, which in turn
+requires the `Future::Output` type to implement `Rem<Rhs::Output>`.
 
 ```rust
 use futures::executor::block_on;
@@ -433,8 +429,8 @@ assert_eq!(2, block_on(result));
 <summary><b>Shl</b></summary>
 
 `Async` implements `Shl<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `Shl<Rhs::Output>`. The result of the left
-shift is
+`Future::Output` type implements `Shl<Rhs::Output>`. The resulting type of the
+left shift is
 `Async<impl Future<Output = <Future::Output as Shl<Rhs::Output>>::Output>>`.
 
 ```rust
@@ -478,8 +474,8 @@ assert_eq!(42, block_on(result));
 <summary><b>Shr</b></summary>
 
 `Async` implements `Shr<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `Shr<Rhs::Output>`. The result of the right
-shift is
+`Future::Output` type implements `Shr<Rhs::Output>`. The resulting type of the
+right shift is
 `Async<impl Future<Output = <Future::Output as Shr<Rhs::Output>>::Output>>`.
 
 ```rust
@@ -523,7 +519,7 @@ assert_eq!(42, block_on(result));
 <summary><b>Sub</b></summary>
 
 `Async` implements `Sub<Rhs> where Rhs: Future` when the wrapped
-`Future::Output` type implements `Sub<Rhs::Output>`. The result of the
+`Future::Output` type implements `Sub<Rhs::Output>`. The resulting type of the
 subtraction is
 `Async<impl Future<Output = <Future::Output as Sub<Rhs::Output>>::Output>>`.
 
@@ -543,10 +539,9 @@ assert_eq!(42, block_on(result));
 <details>
 <summary><b>SubAssign</b></summary>
 
-`Async` implements `SubAssign<Rhs> where Rhs: Future` when the wrapped
-`Future` type implements `Assignable<<Async<Future> as Sub<Rhs>>::Output>`,
-which in turn requires the `Future::Output` type to implement
-`Sub<Rhs::Output>`.
+`Async` implements `SubAssign<Rhs> where Rhs: Future` when the wrapped `Future`
+type implements `Assignable<<Async<Future> as Sub<Rhs>>::Output>`, which in turn
+requires the `Future::Output` type to implement `Sub<Rhs::Output>`.
 
 ```rust
 use futures::executor::block_on;

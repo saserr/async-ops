@@ -86,8 +86,8 @@
 //! ## Add
 //!
 //! `Async` implements `Add<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `Add<Rhs::Output>`. The result of the
-//! addition is
+//! `Future::Output` type implements `Add<Rhs::Output>`. The resulting type of
+//! the addition is
 //! `Async<impl Future<Output = <Future::Output as Add<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -126,8 +126,8 @@
 //! ## BitAnd
 //!
 //! `Async` implements `BitAnd<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `BitAnd<Rhs::Output>`. The result of the
-//! bitwise and is
+//! `Future::Output` type implements `BitAnd<Rhs::Output>`. The resulting type
+//! of the bitwise and is
 //! `Async<impl Future<Output = <Future::Output as BitAnd<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -166,8 +166,8 @@
 //! ## BitOr
 //!
 //! `Async` implements `BitOr<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `BitOr<Rhs::Output>`. The result of the
-//! bitwise or is
+//! `Future::Output` type implements `BitOr<Rhs::Output>`. The resulting type of
+//! the bitwise or is
 //! `Async<impl Future<Output = <Future::Output as BitOr<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -206,8 +206,8 @@
 //! ## BitXor
 //!
 //! `Async` implements `BitXor<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `BitXor<Rhs::Output>`. The result of the
-//! bitwise xor is
+//! `Future::Output` type implements `BitXor<Rhs::Output>`. The resulting type
+//! of the bitwise xor is
 //! `Async<impl Future<Output = <Future::Output as BitXor<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -246,8 +246,8 @@
 //! ## Div
 //!
 //! `Async` implements `Div<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `Div<Rhs::Output>`. The result of the
-//! division is
+//! `Future::Output` type implements `Div<Rhs::Output>`. The resulting type of
+//! the division is
 //! `Async<impl Future<Output = <Future::Output as Div<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -286,8 +286,8 @@
 //! ## Mul
 //!
 //! `Async` implements `Mul<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `Mul<Rhs::Output>`. The result of the
-//! multiplication is
+//! `Future::Output` type implements `Mul<Rhs::Output>`. The resulting type of
+//! the multiplication is
 //! `Async<impl Future<Output = <Future::Output as Mul<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -326,7 +326,7 @@
 //! ## Neg
 //!
 //! `Async` implements `Neg` when the wrapped `Future::Output` type implements
-//! `Neg`. The result of the negation is
+//! `Neg`. The resulting type of the negation is
 //! `Async<impl Future<Output = <Future::Output as Neg>::Output>>`.
 //!
 //! ```rust
@@ -342,7 +342,7 @@
 //! ## Not
 //!
 //! `Async` implements `Not` when the wrapped `Future::Output` type implements
-//! `Not`. The result of the logical negation is
+//! `Not`. The resulting type of the logical negation is
 //! `Async<impl Future<Output = <Future::Output as Not>::Output>>`.
 //!
 //! ```rust
@@ -358,8 +358,8 @@
 //! ## Rem
 //!
 //! `Async` implements `Rem<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `Rem<Rhs::Output>`. The result of the
-//! reminder operation is
+//! `Future::Output` type implements `Rem<Rhs::Output>`. The resulting type of
+//! the reminder operation is
 //! `Async<impl Future<Output = <Future::Output as Rem<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -398,8 +398,8 @@
 //! ## Shl
 //!
 //! `Async` implements `Shl<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `Shl<Rhs::Output>`. The result of the
-//! left shift is
+//! `Future::Output` type implements `Shl<Rhs::Output>`. The resulting type of
+//! the left shift is
 //! `Async<impl Future<Output = <Future::Output as Shl<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -438,8 +438,8 @@
 //! ## Shr
 //!
 //! `Async` implements `Shr<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `Shr<Rhs::Output>`. The result of the
-//! right shift is
+//! `Future::Output` type implements `Shr<Rhs::Output>`. The resulting type of
+//! the right shift is
 //! `Async<impl Future<Output = <Future::Output as Shr<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
@@ -478,8 +478,8 @@
 //! ## Sub
 //!
 //! `Async` implements `Sub<Rhs> where Rhs: Future` when the wrapped
-//! `Future::Output` type implements `Sub<Rhs::Output>`. The result of the
-//! subtraction is
+//! `Future::Output` type implements `Sub<Rhs::Output>`. The resulting type of
+//! the subtraction is
 //! `Async<impl Future<Output = <Future::Output as Sub<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
