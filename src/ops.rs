@@ -50,7 +50,7 @@ impl<'a, T, Fut: Future<Output = T> + 'a> Assignable<Fut> for LocalBoxFuture<'a,
 /// Trait that represents an unary operation on the operand of type `Operand`
 /// that returns the result of type `Output`.
 ///
-/// See [`Async::unary`](crate::Async::unary).
+/// See [`Async::unary_op`](crate::Async::unary_op).
 pub trait Unary<Operand> {
   /// The resulting type after applying the unary operation.
   type Output;
