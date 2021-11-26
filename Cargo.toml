@@ -3,6 +3,7 @@ name = "async-ops"
 version = "1.0.0"
 description = "Use std::ops traits with Futures"
 repository = "https://github.com/saserr/async-ops"
+documentation = "https://docs.rs/async-ops/"
 license = "MIT OR Apache-2.0"
 authors = ["Sanjin Sehic <saserr@gmail.com>"]
 readme = "README.md"
