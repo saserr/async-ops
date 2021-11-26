@@ -143,7 +143,7 @@ macro_rules! from_std_unary_ops {
         "use async_ops::", stringify!($Op), ";\n\n",
         "let a = async { 42 };\n\n",
         "let result = async {\n",
-        "  async_ops::on(a).unary(", stringify!($Op),").await\n",
+        "  async_ops::on(a).unary_op(", stringify!($Op),").await\n",
         "};\n\n",
         "assert_eq!(std::ops::", stringify!($Op), "::",
         stringify!([<$Op:lower>]), "(42), block_on(result));")]

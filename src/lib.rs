@@ -637,12 +637,12 @@ impl<Fut: Future> Async<Fut> {
   /// let a = async { 2 };
   ///
   /// let result = async {
-  ///   async_ops::on(a).unary(Return42).await
+  ///   async_ops::on(a).unary_op(Return42).await
   /// };
   ///
   /// assert_eq!(42, block_on(result));
   /// ```
-  pub fn unary<Op: Unary<Fut>>(self, _: Op) -> Async<Op::Output>
+  pub fn unary_op<Op: Unary<Fut>>(self, _: Op) -> Async<Op::Output>
   where
     Op::Output: Future,
   {
