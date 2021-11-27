@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/saserr/async-ops/branch/main/graph/badge.svg?token=2K2DABXJMS)](https://codecov.io/gh/saserr/async-ops)
 [![License](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue.svg)](
 https://github.com/saserr/async-ops)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaserr%2Fasync-ops.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaserr%2Fasync-ops?ref=badge_shield)
 
 This crate provides a way to use
 [some `std::ops` traits](#supported-stdops-traits) with `Futures`. To be able to
@@ -572,6 +573,9 @@ or <http://www.apache.org/licenses/LICENSE-2.0>)
 <http://opensource.org/licenses/MIT>)
 
 at your option.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaserr%2Fasync-ops.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaserr%2Fasync-ops?ref=badge_large)
 
 ### Contribution
 
