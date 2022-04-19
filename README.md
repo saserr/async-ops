@@ -21,7 +21,7 @@ When writing `async` code it is common to do operations that are supported
 through `std::ops`. For example, adding to numbers might look like this:
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 // Immediately returning a number is done for simplicity and production code
 // wouldn't just immediately return a value.
@@ -38,8 +38,8 @@ Actually, the above code is not optimally implemented because `a` and `b` are
 use `join!` to be able to concurrently `await` both values like this:
 
 ```rust
-use futures::executor::block_on;
-use futures::join;
+use futures_executor::block_on;
+use futures_util::join;
 
 let a = async { 40 };
 let b = async { 2 };
@@ -56,7 +56,7 @@ Or, just use `async_ops::on` to do the same thing like the above example in one
 line:
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 40 };
 let b = async { 2 };
@@ -80,7 +80,7 @@ addition is
 `Async<impl Future<Output = <Future::Output as Add<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 40 };
 let b = async { 2 };
@@ -100,7 +100,7 @@ type implements `Assignable<<Async<Future> as Add<Rhs>>::Output>`, which in turn
 requires the `Future::Output` type to implement `Add<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 40 };
 let b = async { 2 };
@@ -125,7 +125,7 @@ the bitwise and is
 `Async<impl Future<Output = <Future::Output as BitAnd<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 110 };
 let b = async { 59 };
@@ -146,7 +146,7 @@ which in turn requires the `Future::Output` type to implement
 `BitAnd<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 110 };
 let b = async { 59 };
@@ -171,7 +171,7 @@ bitwise or is
 `Async<impl Future<Output = <Future::Output as BitOr<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 40 };
 let b = async { 10 };
@@ -192,7 +192,7 @@ which in turn requires the `Future::Output` type to implement
 `BitOr<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 40 };
 let b = async { 10 };
@@ -217,7 +217,7 @@ the bitwise xor is
 `Async<impl Future<Output = <Future::Output as BitXor<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 38 };
 let b = async { 12 };
@@ -238,7 +238,7 @@ which in turn requires the `Future::Output` type to implement
 `BitXor<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 38 };
 let b = async { 12 };
@@ -263,7 +263,7 @@ division is
 `Async<impl Future<Output = <Future::Output as Div<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 84 };
 let b = async { 2 };
@@ -283,7 +283,7 @@ type implements `Assignable<<Async<Future> as Div<Rhs>>::Output>`, which in turn
 requires the `Future::Output` type to implement `Div<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 84 };
 let b = async { 2 };
@@ -308,7 +308,7 @@ multiplication is
 `Async<impl Future<Output = <Future::Output as Mul<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 21 };
 let b = async { 2 };
@@ -328,7 +328,7 @@ type implements `Assignable<<Async<Future> as Mul<Rhs>>::Output>`, which in turn
 requires the `Future::Output` type to implement `Mul<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 21 };
 let b = async { 2 };
@@ -352,7 +352,7 @@ assert_eq!(42, block_on(result));
 `Async<impl Future<Output = <Future::Output as Neg>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { -42 };
 
@@ -371,7 +371,7 @@ assert_eq!(42, block_on(result));
 `Async<impl Future<Output = <Future::Output as Not>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 213_u8 };
 
@@ -391,7 +391,7 @@ reminder operation is
 `Async<impl Future<Output = <Future::Output as Rem<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 42 };
 let b = async { 5 };
@@ -411,7 +411,7 @@ type implements `Assignable<<Async<Future> as Rem<Rhs>>::Output>`, which in turn
 requires the `Future::Output` type to implement `Rem<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 42 };
 let b = async { 5 };
@@ -436,7 +436,7 @@ left shift is
 `Async<impl Future<Output = <Future::Output as Shl<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 21 };
 let b = async { 1 };
@@ -456,7 +456,7 @@ type implements `Assignable<<Async<Future> as Shl<Rhs>>::Output>`, which in turn
 requires the `Future::Output` type to implement `Shl<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 21 };
 let b = async { 1 };
@@ -481,7 +481,7 @@ right shift is
 `Async<impl Future<Output = <Future::Output as Shr<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 168 };
 let b = async { 2 };
@@ -501,7 +501,7 @@ type implements `Assignable<<Async<Future> as Shr<Rhs>>::Output>`, which in turn
 requires the `Future::Output` type to implement `Shr<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 168 };
 let b = async { 2 };
@@ -526,7 +526,7 @@ subtraction is
 `Async<impl Future<Output = <Future::Output as Sub<Rhs::Output>>::Output>>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 44 };
 let b = async { 2 };
@@ -546,7 +546,7 @@ type implements `Assignable<<Async<Future> as Sub<Rhs>>::Output>`, which in turn
 requires the `Future::Output` type to implement `Sub<Rhs::Output>`.
 
 ```rust
-use futures::executor::block_on;
+use futures_executor::block_on;
 
 let a = async { 44 };
 let b = async { 2 };

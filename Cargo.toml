@@ -12,13 +12,16 @@ categories = ["asynchronous", "concurrency", "no-std"]
 edition = "2021"
 
 [dependencies]
-futures = { version = "0.3", default-features = false, features = ["alloc"] }
+futures = { package = "futures-core", version = "0.3", default-features = false, features = [
+  "alloc",
+] }
+futures-util = { version = "0.3", default-features = false }
 paste = "1.0"
 pin-project-lite = "0.2"
 
 [dev-dependencies]
 doc-comment = "0.3"
-futures = { version = "0.3", default-features = false, features = [
-  "async-await",
-  "executor",
+futures-util = { version = "0.3", default-features = false, features = [
+  "async-await-macro",
 ] }
+futures-executor = "0.3"
