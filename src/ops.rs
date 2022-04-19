@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::future::Future;
-use std::pin::Pin;
-use std::ptr;
-use std::task::{Context, Poll};
+use core::future::Future;
+use core::pin::Pin;
+use core::ptr;
+use core::task::{Context, Poll};
 
 use futures::future::{join, BoxFuture, FutureExt, Join, LocalBoxFuture};
 use futures::ready;
@@ -91,7 +91,7 @@ macro_rules! from_std_unary_ops {
       #[doc = concat!(
         "Returns a [`Future`] that will resolve the given `Future` ",
         "and [`", stringify!([<$Op:lower>]), "`]",
-        "(std::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
+        "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "its result.\n\n# Example\n\n",
         "```rust\n",
         "use futures::executor::block_on;\n",
@@ -102,7 +102,7 @@ macro_rules! from_std_unary_ops {
         "};\n\n",
         "assert_eq!(std::ops::", stringify!($Op), "::",
         stringify!([<$Op:lower>]), "(42), block_on(result));")]
-      pub fn [<$Op:lower>]<Operand: std::ops::$Op>(
+      pub fn [<$Op:lower>]<Operand: core::ops::$Op>(
         operand: impl Future<Output = Operand>,
       ) -> impl Future<Output = Operand::Output> {
         $Op::op(operand)
@@ -112,8 +112,8 @@ macro_rules! from_std_unary_ops {
         #[doc = concat!(
           "A [`Future`] that will resolve a `Future` and ",
           "[`", stringify!([<$Op:lower>]), "`]",
-          "(std::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
-          "its result.")]
+          "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]),
+          ") its result.")]
         #[must_use = "futures do nothing unless you `.await` or poll them"]
         pub struct [<Async $Op>]<Operand: Future> {
           #[pin]
@@ -123,20 +123,20 @@ macro_rules! from_std_unary_ops {
 
       impl<Operand: Future> Future for [<Async $Op>]<Operand>
       where
-        Operand::Output: std::ops::$Op,
+        Operand::Output: core::ops::$Op,
       {
-        type Output = <Operand::Output as std::ops::$Op>::Output;
+        type Output = <Operand::Output as core::ops::$Op>::Output;
 
         fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
           let operand = ready!(self.project().operand.poll(cx));
-          Poll::Ready(std::ops::$Op::[<$Op:lower>](operand))
+          Poll::Ready(core::ops::$Op::[<$Op:lower>](operand))
         }
       }
 
       #[doc = concat!(
         "A [`Unary`] operation that will concurrently resolve a [`Future`] ",
         "and [`", stringify!([<$Op:lower>]), "`]",
-        "(std::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
+        "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "its result.\n\n# Example\n\n",
         "```rust\n",
         "use futures::executor::block_on;\n",
@@ -151,7 +151,7 @@ macro_rules! from_std_unary_ops {
 
       impl<Operand: Future> Unary<Operand> for $Op
       where
-        Operand::Output: std::ops::$Op,
+        Operand::Output: core::ops::$Op,
       {
         type Output = [<Async $Op>]<Operand>;
 
@@ -160,9 +160,9 @@ macro_rules! from_std_unary_ops {
         }
       }
 
-      impl<Operand: Future> std::ops::$Op for Async<Operand>
+      impl<Operand: Future> core::ops::$Op for Async<Operand>
       where
-        Operand::Output: std::ops::$Op,
+        Operand::Output: core::ops::$Op,
       {
         type Output = Async<[<Async $Op>]<Operand>>;
 
@@ -180,7 +180,7 @@ macro_rules! from_std_binary_ops {
       #[doc = concat!(
         "Returns a [`Future`] that will concurrently resolve given `Futures` ",
         "and [`", stringify!([<$Op:lower>]), "`]",
-        "(std::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
+        "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "their results.\n\n# Example\n\n",
         "```rust\n",
         "use futures::executor::block_on;\n",
@@ -192,7 +192,7 @@ macro_rules! from_std_binary_ops {
         "};\n\n",
         "assert_eq!(std::ops::", stringify!($Op), "::",
         stringify!([<$Op:lower>]), "(42, 2), block_on(result));")]
-      pub fn [<$Op:lower>]<Lhs: std::ops::$Op<Rhs>, Rhs>(
+      pub fn [<$Op:lower>]<Lhs: core::ops::$Op<Rhs>, Rhs>(
         lhs: impl Future<Output = Lhs>,
         rhs: impl Future<Output = Rhs>,
       ) -> impl Future<Output = Lhs::Output> {
@@ -214,20 +214,20 @@ macro_rules! from_std_binary_ops {
 
       impl<Lhs: Future, Rhs: Future> Future for [<Async $Op>]<Lhs, Rhs>
       where
-        Lhs::Output: std::ops::$Op<Rhs::Output>,
+        Lhs::Output: core::ops::$Op<Rhs::Output>,
       {
-        type Output = <Lhs::Output as std::ops::$Op<Rhs::Output>>::Output;
+        type Output = <Lhs::Output as core::ops::$Op<Rhs::Output>>::Output;
 
         fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
           let (lhs, rhs) = ready!(self.project().future.poll(cx));
-          Poll::Ready(std::ops::$Op::[<$Op:lower>](lhs, rhs))
+          Poll::Ready(core::ops::$Op::[<$Op:lower>](lhs, rhs))
         }
       }
 
       #[doc = concat!(
         "A [`Binary`] operation that will concurrently resolve two ",
         "[`Futures`](Future) and [`", stringify!([<$Op:lower>]), "`]",
-        "(std::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
+        "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "their results.\n\n# Example\n\n",
         "```rust\n",
         "use futures::executor::block_on;\n",
@@ -243,7 +243,7 @@ macro_rules! from_std_binary_ops {
 
       impl<Lhs: Future, Rhs: Future> Binary<Lhs, Rhs> for $Op
       where
-        Lhs::Output: std::ops::$Op<Rhs::Output>,
+        Lhs::Output: core::ops::$Op<Rhs::Output>,
       {
         type Output = [<Async $Op>]<Lhs, Rhs>;
 
@@ -254,9 +254,9 @@ macro_rules! from_std_binary_ops {
         }
       }
 
-      impl<Lhs: Future, Rhs: Future> std::ops::$Op<Rhs> for Async<Lhs>
+      impl<Lhs: Future, Rhs: Future> core::ops::$Op<Rhs> for Async<Lhs>
       where
-        Lhs::Output: std::ops::$Op<Rhs::Output>,
+        Lhs::Output: core::ops::$Op<Rhs::Output>,
       {
         type Output = Async<[<Async $Op>]<Lhs, Rhs>>;
 
@@ -265,11 +265,11 @@ macro_rules! from_std_binary_ops {
         }
       }
 
-      impl<Lhs, Rhs> std::ops::[<$Op Assign>]<Rhs> for Async<Lhs>
+      impl<Lhs, Rhs> core::ops::[<$Op Assign>]<Rhs> for Async<Lhs>
       where
         Lhs: Assignable<[<Async $Op>]<Lhs, Rhs>> + Future,
         Rhs: Future,
-        <Lhs as Future>::Output: std::ops::$Op<Rhs::Output>,
+        <Lhs as Future>::Output: core::ops::$Op<Rhs::Output>,
       {
         fn [<$Op:lower _assign>](&mut self, rhs: Rhs) {
           $Op::op_assign(&mut self.future, rhs);
@@ -286,7 +286,7 @@ from_std_binary_ops!(Add, BitAnd, BitOr, BitXor, Div, Mul, Rem, Shl, Shr, Sub);
 mod tests {
   use super::*;
 
-  use std::future::ready;
+  use core::future::ready;
 
   use futures::executor::block_on;
 

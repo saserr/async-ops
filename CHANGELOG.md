@@ -13,6 +13,10 @@ and this project adheres to
 - `assignable!` macro that wraps a `Future` with `Async` so that the result can
 be used with the `Assign` variants of `std::ops` traits.
 
+### Changed
+
+- To `no_std` to make the crate platform-agnostic.
+
 ### Deprecated
 
 - `assignable` function which is now replaced with `assignable!` macro. In cases
