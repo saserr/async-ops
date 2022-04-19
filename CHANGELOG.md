@@ -8,6 +8,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-04-19
+
 ### Added
 
 - `assignable!` macro that wraps a `Future` with `Async` so that the result can
