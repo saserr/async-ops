@@ -24,8 +24,8 @@
 //! then the same `std::ops` trait will be implemented by the `Async` instance.
 //!
 //! Another option is to wrap a `Future` with `Async` using
-//! [`async_ops::assignable`](crate::assignable) to enable usage of the `Assign`
-//! variants of `std::ops` traits on the `Future`.
+//! [`assignable!`] to enable usage of the `Assign` variants of `std::ops`
+//! traits on the `Future`.
 //!
 //! # Example
 //!
@@ -115,7 +115,7 @@
 //! let b = async { 2 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a += b;
 //!   a.await
 //! };
@@ -155,7 +155,7 @@
 //! let b = async { 59 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a &= b;
 //!   a.await
 //! };
@@ -195,7 +195,7 @@
 //! let b = async { 10 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a |= b;
 //!   a.await
 //! };
@@ -235,7 +235,7 @@
 //! let b = async { 12 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a ^= b;
 //!   a.await
 //! };
@@ -275,7 +275,7 @@
 //! let b = async { 2 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a /= b;
 //!   a.await
 //! };
@@ -315,7 +315,7 @@
 //! let b = async { 2 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a *= b;
 //!   a.await
 //! };
@@ -387,7 +387,7 @@
 //! let b = async { 5 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a %= b;
 //!   a.await
 //! };
@@ -427,7 +427,7 @@
 //! let b = async { 1 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a <<= b;
 //!   a.await
 //! };
@@ -467,7 +467,7 @@
 //! let b = async { 2 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a >>= b;
 //!   a.await
 //! };
@@ -507,7 +507,7 @@
 //! let b = async { 2 };
 //!
 //! let result = async {
-//!   let mut a = async_ops::assignable(a);
+//!   async_ops::assignable!(a);
 //!   a -= b;
 //!   a.await
 //! };
@@ -547,10 +547,38 @@ pub fn on<Fut: Future>(future: Fut) -> Async<Fut> {
   Async { future }
 }
 
-/// Wraps the given [`Future`] with [`Async`] that can be used with the `Assign`
-/// variants of [`std::ops`] traits.
+/// Wraps the given [`Future`] with [`Async`] so that the result can be used
+/// with the `Assign` variants of [`std::ops`] traits.
 ///
 /// See also [`Async::assignable`].
+///
+/// # Example
+///
+/// ```rust
+/// use futures::executor::block_on;
+///
+/// let a = async { 40 };
+/// let b = async { 2 };
+///
+/// let result = async {
+///   async_ops::assignable!(a);
+///   a += b;
+///   a.await
+/// };
+///
+/// assert_eq!(42, block_on(result));
+/// ```
+#[macro_export]
+macro_rules! assignable {
+  ($var:ident) => {
+    let mut $var = $crate::assignable($var);
+  };
+}
+
+/// Wraps the given [`Future`] with [`Async`] so that the result can be used
+/// with the `Assign` variants of [`std::ops`] traits.
+///
+/// Use [`assignable!`] and [`Async::assignable`] instead.
 ///
 /// # Example
 ///
@@ -568,6 +596,10 @@ pub fn on<Fut: Future>(future: Fut) -> Async<Fut> {
 ///
 /// assert_eq!(42, block_on(result));
 /// ```
+#[deprecated(
+  since = "1.1.0",
+  note = "Use assignable! or Async::assignable instead."
+)]
 pub fn assignable<'a, Fut: Future + Send + 'a>(future: Fut) -> Async<BoxFuture<'a, Fut::Output>> {
   let future: BoxFuture<Fut::Output> = Assignable::from(future);
   Async { future }
@@ -590,7 +622,7 @@ impl<Fut: Future> Async<Fut> {
   /// Wraps the inner [`Future`] in [`Async`] with the given `Assignable` type
   /// so that it can be used with `Assign` variants of [`std::ops`] traits.
   ///
-  /// See also [`async_ops::assignable`](crate::assignable).
+  /// See also [`assignable!`].
   ///
   /// # Example
   ///
@@ -710,7 +742,7 @@ impl<Fut: Future> Async<Fut> {
   /// let b = async { 42 };
   ///
   /// let result = async {
-  ///   let mut a = async_ops::assignable(a);
+  ///   async_ops::assignable!(a);
   ///   a.op_assign(ReturnRhs, b);
   ///   a.await
   /// };

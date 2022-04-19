@@ -12,7 +12,7 @@ with `Async` using `async_ops::on`. Then, as long the `Future::Output` type
 implements a supported `std::ops` trait, then the same `std::ops` trait will be
 implemented by the `Async` instance.
 
-Another option is to wrap a `Future` with `Async` using `async_ops::assignable`
+Another option is to wrap a `Future` with `Async` using `async_ops::assignable!`
 to enable usage of the `Assign` variants of `std::ops` traits on the `Future`.
 
 ## Example
@@ -106,7 +106,7 @@ let a = async { 40 };
 let b = async { 2 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a += b;
   a.await
 };
@@ -152,7 +152,7 @@ let a = async { 110 };
 let b = async { 59 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a &= b;
   a.await
 };
@@ -198,7 +198,7 @@ let a = async { 40 };
 let b = async { 10 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a |= b;
   a.await
 };
@@ -244,7 +244,7 @@ let a = async { 38 };
 let b = async { 12 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a ^= b;
   a.await
 };
@@ -289,7 +289,7 @@ let a = async { 84 };
 let b = async { 2 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a /= b;
   a.await
 };
@@ -334,7 +334,7 @@ let a = async { 21 };
 let b = async { 2 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a *= b;
   a.await
 };
@@ -417,7 +417,7 @@ let a = async { 42 };
 let b = async { 5 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a %= b;
   a.await
 };
@@ -462,7 +462,7 @@ let a = async { 21 };
 let b = async { 1 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a <<= b;
   a.await
 };
@@ -507,7 +507,7 @@ let a = async { 168 };
 let b = async { 2 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a >>= b;
   a.await
 };
@@ -552,7 +552,7 @@ let a = async { 44 };
 let b = async { 2 };
 
 let result = async {
-  let mut a = async_ops::assignable(a);
+  async_ops::assignable!(a);
   a -= b;
   a.await
 };

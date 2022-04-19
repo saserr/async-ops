@@ -1,6 +1,6 @@
 [package]
 name = "async-ops"
-version = "1.0.0"
+version = "1.1.0"
 description = "Use std::ops traits with Futures"
 repository = "https://github.com/saserr/async-ops"
 documentation = "https://docs.rs/async-ops/"

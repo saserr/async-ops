@@ -8,6 +8,16 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `assignable!` macro that wraps a `Future` with `Async` so that the result can
+be used with the `Assign` variants of `std::ops` traits.
+
+### Deprecated
+
+- `assignable` function which is now replaced with `assignable!` macro. In cases
+where the function is still needed, `Async::assignable` can be used.
+
 ## [1.0.0] - 2021-11-25
 
 ### Added
