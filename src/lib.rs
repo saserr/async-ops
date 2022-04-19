@@ -12,16 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![no_std]
 #![warn(missing_docs)]
 
 //! `std:ops` traits for `Future`
 //!
 //! This crate provides a way to use
 //! [some `std::ops` traits](#supported-stdops-traits) with [futures](Future).
-//! To be able to use a [`std::ops`] trait with a `Future`, first you need to
-//! wrap the `Future` with [`Async`] using [`async_ops::on`](crate::on). Then,
-//! as long the `Future::Output` type implements a supported `std::ops` trait,
-//! then the same `std::ops` trait will be implemented by the `Async` instance.
+//! To be able to use a [`std::ops`](core::ops) trait with a `Future`, first you
+//! need to wrap the `Future` with [`Async`] using [`async_ops::on`](crate::on).
+//! Then, as long the `Future::Output` type implements a supported `std::ops`
+//! trait, then the same `std::ops` trait will be implemented by the `Async`
+//! instance.
 //!
 //! Another option is to wrap a `Future` with `Async` using
 //! [`assignable!`] to enable usage of the `Assign` variants of `std::ops`
@@ -517,9 +519,9 @@
 
 mod ops;
 
-use std::future::Future;
-use std::pin::Pin;
-use std::task::{Context, Poll};
+use core::future::Future;
+use core::pin::Pin;
+use core::task::{Context, Poll};
 
 use futures::future::BoxFuture;
 use pin_project_lite::pin_project;
@@ -548,7 +550,7 @@ pub fn on<Fut: Future>(future: Fut) -> Async<Fut> {
 }
 
 /// Wraps the given [`Future`] with [`Async`] so that the result can be used
-/// with the `Assign` variants of [`std::ops`] traits.
+/// with the `Assign` variants of [`std::ops`](core::ops) traits.
 ///
 /// See also [`Async::assignable`].
 ///
@@ -576,7 +578,7 @@ macro_rules! assignable {
 }
 
 /// Wraps the given [`Future`] with [`Async`] so that the result can be used
-/// with the `Assign` variants of [`std::ops`] traits.
+/// with the `Assign` variants of [`std::ops`](core::ops) traits.
 ///
 /// Use [`assignable!`] and [`Async::assignable`] instead.
 ///
@@ -620,7 +622,8 @@ pin_project! {
 
 impl<Fut: Future> Async<Fut> {
   /// Wraps the inner [`Future`] in [`Async`] with the given `Assignable` type
-  /// so that it can be used with `Assign` variants of [`std::ops`] traits.
+  /// so that it can be used with `Assign` variants of [`std::ops`](core::ops)
+  /// traits.
   ///
   /// See also [`assignable!`].
   ///
@@ -768,10 +771,12 @@ impl<Fut: Future> Future for Async<Fut> {
 
 #[cfg(test)]
 mod tests {
+  extern crate alloc;
+
   use super::*;
 
-  use std::cell::RefCell;
-  use std::rc::Rc;
+  use alloc::rc::Rc;
+  use core::cell::RefCell;
 
   use futures::future::FutureExt;
 

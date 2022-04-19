@@ -8,13 +8,17 @@ license = "MIT OR Apache-2.0"
 authors = ["Sanjin Sehic <saserr@gmail.com>"]
 readme = "README.md"
 keywords = ["future", "async", "await", "std"]
-categories = ["asynchronous", "concurrency"]
+categories = ["asynchronous", "concurrency", "no-std"]
 edition = "2021"
 
 [dependencies]
-futures = "0.3"
+futures = { version = "0.3", default-features = false, features = ["alloc"] }
 paste = "1.0"
 pin-project-lite = "0.2"
 
 [dev-dependencies]
 doc-comment = "0.3"
+futures = { version = "0.3", default-features = false, features = [
+  "async-await",
+  "executor",
+] }
