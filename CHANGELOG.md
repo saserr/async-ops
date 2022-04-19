@@ -16,6 +16,7 @@ be used with the `Assign` variants of `std::ops` traits.
 ### Changed
 
 - To `no_std` to make the crate platform-agnostic.
+- Use `futures-core` and `futures-util` as dependencies instead of `futures`.
 
 ### Deprecated
 

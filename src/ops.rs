@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use alloc::boxed::Box;
+
 use core::future::Future;
 use core::pin::Pin;
 use core::ptr;
 use core::task::{Context, Poll};
 
-use futures::future::{join, BoxFuture, FutureExt, Join, LocalBoxFuture};
+use futures::future::{BoxFuture, LocalBoxFuture};
 use futures::ready;
+use futures_util::future::{join, Join};
 use paste::paste;
 use pin_project_lite::pin_project;
 
@@ -36,14 +39,14 @@ pub trait Assignable<T> {
 impl<'a, T, Fut: Future<Output = T> + Send + 'a> Assignable<Fut> for BoxFuture<'a, T> {
   /// Wrap the given [`Future`] with [`BoxFuture`].
   fn from(future: Fut) -> Self {
-    future.boxed()
+    Box::pin(future)
   }
 }
 
 impl<'a, T, Fut: Future<Output = T> + 'a> Assignable<Fut> for LocalBoxFuture<'a, T> {
   /// Wrap the given [`Future`] with [`LocalBoxFuture`].
   fn from(future: Fut) -> Self {
-    future.boxed_local()
+    Box::pin(future)
   }
 }
 
@@ -94,7 +97,7 @@ macro_rules! from_std_unary_ops {
         "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "its result.\n\n# Example\n\n",
         "```rust\n",
-        "use futures::executor::block_on;\n",
+        "use futures_executor::block_on;\n",
         "use async_ops::", stringify!([<$Op:lower>]), ";\n\n",
         "let a = async { 42 };\n\n",
         "let result = async {\n",
@@ -139,7 +142,7 @@ macro_rules! from_std_unary_ops {
         "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "its result.\n\n# Example\n\n",
         "```rust\n",
-        "use futures::executor::block_on;\n",
+        "use futures_executor::block_on;\n",
         "use async_ops::", stringify!($Op), ";\n\n",
         "let a = async { 42 };\n\n",
         "let result = async {\n",
@@ -183,7 +186,7 @@ macro_rules! from_std_binary_ops {
         "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "their results.\n\n# Example\n\n",
         "```rust\n",
-        "use futures::executor::block_on;\n",
+        "use futures_executor::block_on;\n",
         "use async_ops::", stringify!([<$Op:lower>]), ";\n\n",
         "let a = async { 42 };\n",
         "let b = async { 2 };\n\n",
@@ -230,7 +233,7 @@ macro_rules! from_std_binary_ops {
         "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
         "their results.\n\n# Example\n\n",
         "```rust\n",
-        "use futures::executor::block_on;\n",
+        "use futures_executor::block_on;\n",
         "use async_ops::", stringify!($Op), ";\n\n",
         "let a = async { 42 };\n",
         "let b = async { 2 };\n\n",
@@ -288,7 +291,7 @@ mod tests {
 
   use core::future::ready;
 
-  use futures::executor::block_on;
+  use futures_executor::block_on;
 
   struct ReturnRhs;
 

@@ -35,7 +35,7 @@
 //! through `std::ops`. For example, adding to numbers might look like this:
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! // Immediately returning a number is done for simplicity and production code
 //! // wouldn't just immediately return a value.
@@ -53,11 +53,11 @@
 //! like this:
 //!
 //! ```rust
-//! # use futures::executor::block_on;
+//! # use futures_executor::block_on;
 //! # let a = async { 40 };
 //! # let b = async { 2 };
 //!
-//! use futures::join;
+//! use futures_util::join;
 //!
 //! let result = async {
 //!   let (a, b) = join!(a, b);
@@ -71,7 +71,7 @@
 //! above example in one line:
 //!
 //! ```rust
-//! # use futures::executor::block_on;
+//! # use futures_executor::block_on;
 //! # let a = async { 40 };
 //! # let b = async { 2 };
 //!
@@ -93,7 +93,7 @@
 //! `Async<impl Future<Output = <Future::Output as Add<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 40 };
 //! let b = async { 2 };
@@ -111,7 +111,7 @@
 //! `Add<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 40 };
 //! let b = async { 2 };
@@ -133,7 +133,7 @@
 //! `Async<impl Future<Output = <Future::Output as BitAnd<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 110 };
 //! let b = async { 59 };
@@ -151,7 +151,7 @@
 //! the `Future::Output` type to implement `BitAnd<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 110 };
 //! let b = async { 59 };
@@ -173,7 +173,7 @@
 //! `Async<impl Future<Output = <Future::Output as BitOr<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 40 };
 //! let b = async { 10 };
@@ -191,7 +191,7 @@
 //! the `Future::Output` type to implement `BitOr<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 40 };
 //! let b = async { 10 };
@@ -213,7 +213,7 @@
 //! `Async<impl Future<Output = <Future::Output as BitXor<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 38 };
 //! let b = async { 12 };
@@ -231,7 +231,7 @@
 //! the `Future::Output` type to implement `BitXor<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 38 };
 //! let b = async { 12 };
@@ -253,7 +253,7 @@
 //! `Async<impl Future<Output = <Future::Output as Div<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 84 };
 //! let b = async { 2 };
@@ -271,7 +271,7 @@
 //! `Div<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 84 };
 //! let b = async { 2 };
@@ -293,7 +293,7 @@
 //! `Async<impl Future<Output = <Future::Output as Mul<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 21 };
 //! let b = async { 2 };
@@ -311,7 +311,7 @@
 //! `Mul<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 21 };
 //! let b = async { 2 };
@@ -332,7 +332,7 @@
 //! `Async<impl Future<Output = <Future::Output as Neg>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { -42 };
 //!
@@ -348,7 +348,7 @@
 //! `Async<impl Future<Output = <Future::Output as Not>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 213_u8 };
 //!
@@ -365,7 +365,7 @@
 //! `Async<impl Future<Output = <Future::Output as Rem<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 42 };
 //! let b = async { 5 };
@@ -383,7 +383,7 @@
 //! `Rem<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 42 };
 //! let b = async { 5 };
@@ -405,7 +405,7 @@
 //! `Async<impl Future<Output = <Future::Output as Shl<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 21 };
 //! let b = async { 1 };
@@ -423,7 +423,7 @@
 //! `Shl<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 21 };
 //! let b = async { 1 };
@@ -445,7 +445,7 @@
 //! `Async<impl Future<Output = <Future::Output as Shr<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 168 };
 //! let b = async { 2 };
@@ -463,7 +463,7 @@
 //! `Shr<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 168 };
 //! let b = async { 2 };
@@ -485,7 +485,7 @@
 //! `Async<impl Future<Output = <Future::Output as Sub<Rhs::Output>>::Output>>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 44 };
 //! let b = async { 2 };
@@ -503,7 +503,7 @@
 //! `Sub<Rhs::Output>`.
 //!
 //! ```rust
-//! use futures::executor::block_on;
+//! use futures_executor::block_on;
 //!
 //! let a = async { 44 };
 //! let b = async { 2 };
@@ -516,6 +516,8 @@
 //!
 //! assert_eq!(42, block_on(result));
 //! ```
+
+extern crate alloc;
 
 mod ops;
 
@@ -536,7 +538,7 @@ pub use ops::{
 /// # Example
 ///
 /// ```rust
-/// use futures::executor::block_on;
+/// use futures_executor::block_on;
 ///
 /// let a = async { 40 };
 /// let b = async { 2 };
@@ -557,7 +559,7 @@ pub fn on<Fut: Future>(future: Fut) -> Async<Fut> {
 /// # Example
 ///
 /// ```rust
-/// use futures::executor::block_on;
+/// use futures_executor::block_on;
 ///
 /// let a = async { 40 };
 /// let b = async { 2 };
@@ -585,7 +587,7 @@ macro_rules! assignable {
 /// # Example
 ///
 /// ```rust
-/// use futures::executor::block_on;
+/// use futures_executor::block_on;
 ///
 /// let a = async { 40 };
 /// let b = async { 2 };
@@ -630,7 +632,7 @@ impl<Fut: Future> Async<Fut> {
   /// # Example
   ///
   /// ```rust
-  /// use futures::executor::block_on;
+  /// use futures_executor::block_on;
   /// use futures::future::LocalBoxFuture;
   ///
   /// let a = async { 40 };
@@ -657,7 +659,7 @@ impl<Fut: Future> Async<Fut> {
   ///
   /// ```rust
   /// use std::future::{ready, Ready};
-  /// use futures::executor::block_on;
+  /// use futures_executor::block_on;
   /// use async_ops::Unary;
   ///
   /// struct Return42;
@@ -693,7 +695,7 @@ impl<Fut: Future> Async<Fut> {
   /// # Example
   ///
   /// ```rust
-  /// use futures::executor::block_on;
+  /// use futures_executor::block_on;
   /// use async_ops::Binary;
   ///
   /// struct ReturnRhs;
@@ -729,7 +731,7 @@ impl<Fut: Future> Async<Fut> {
   /// # Example
   ///
   /// ```rust
-  /// use futures::executor::block_on;
+  /// use futures_executor::block_on;
   /// use async_ops::Binary;
   ///
   /// struct ReturnRhs;
@@ -771,14 +773,12 @@ impl<Fut: Future> Future for Async<Fut> {
 
 #[cfg(test)]
 mod tests {
-  extern crate alloc;
-
   use super::*;
 
   use alloc::rc::Rc;
   use core::cell::RefCell;
 
-  use futures::future::FutureExt;
+  use futures_util::future::FutureExt;
 
   pin_project! {
     #[derive(Default)]
