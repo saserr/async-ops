@@ -203,8 +203,8 @@ macro_rules! from_std_binary_ops {
         #[doc = concat!(
           "A [`Future`] that will concurrently resolve two `Futures` and ",
           "[`", stringify!([<$Op:lower>]), "`]",
-          "(std::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]), ") ",
-          "their results.")]
+          "(core::ops::", stringify!($Op), "::", stringify!([<$Op:lower>]),
+          ") their results.")]
         #[must_use = "futures do nothing unless you `.await` or poll them"]
         pub struct [<Async $Op>]<Lhs: Future, Rhs: Future> {
           #[pin]

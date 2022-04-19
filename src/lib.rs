@@ -608,8 +608,8 @@ pub fn assignable<'a, Fut: Future + Send + 'a>(future: Fut) -> Async<BoxFuture<'
 }
 
 pin_project! {
-  /// A wrapper class for a [`Future`] that enables usage of some [`std::ops`]
-  /// traits.
+  /// A wrapper class for a [`Future`] that enables usage of some
+  /// [`std::ops`](core::ops) traits.
   ///
   /// This struct will implement a supported `std::ops` trait when
   /// `<Fut as Future>::Output` type implements the same `std::ops` trait.
